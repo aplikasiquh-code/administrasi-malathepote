@@ -1,0 +1,72 @@
+{
+  "entities": {
+    "SchoolProfile": {
+      "title": "SchoolProfile",
+      "description": "School institutional profile data",
+      "type": "object",
+      "properties": {
+        "namaSekolah": { "type": "string", "maxLength": 200 },
+        "npsn": { "type": "string", "maxLength": 20 },
+        "nss": { "type": "string", "maxLength": 30 },
+        "jenjang": { "type": "string", "maxLength": 50 },
+        "statusSekolah": { "type": "string", "maxLength": 20 },
+        "akreditasi": { "type": "string", "maxLength": 30 },
+        "kurikulum": { "type": "string", "maxLength": 50 },
+        "kepalaSekolah": { "type": "string", "maxLength": 150 },
+        "nipKepalaSekolah": { "type": "string", "maxLength": 50 },
+        "email": { "type": "string", "maxLength": 100 },
+        "telepon": { "type": "string", "maxLength": 50 },
+        "alamatJalan": { "type": "string", "maxLength": 300 },
+        "tahunAjaran": { "type": "string", "maxLength": 20 },
+        "semester": { "type": "string", "maxLength": 20 }
+      },
+      "required": ["namaSekolah", "npsn"]
+    },
+    "SchoolSection": {
+      "title": "SchoolSection",
+      "description": "Partitioned section of school administration data for real-time synchronization",
+      "type": "object",
+      "properties": {
+        "sectionKey": { "type": "string", "maxLength": 50 },
+        "updatedAt": { "type": "string", "maxLength": 50 },
+        "updatedBy": { "type": "string", "maxLength": 100 },
+        "schoolNpsn": { "type": "string", "maxLength": 20 }
+      },
+      "required": ["sectionKey", "updatedAt"]
+    },
+    "SchoolData": {
+      "title": "SchoolData",
+      "description": "Consolidated school administration dataset for real-time synchronization across devices",
+      "type": "object",
+      "properties": {
+        "npsn": { "type": "string", "maxLength": 20 },
+        "updatedAt": { "type": "string", "maxLength": 50 },
+        "updatedBy": { "type": "string", "maxLength": 100 }
+      },
+      "required": ["npsn", "updatedAt"]
+    },
+    "ConnectionTest": {
+      "title": "ConnectionTest",
+      "description": "Used by getDocFromServer to verify connectivity",
+      "type": "object",
+      "properties": {
+        "status": { "type": "string", "maxLength": 50 },
+        "timestamp": { "type": "string", "maxLength": 50 }
+      }
+    }
+  },
+  "firestore": {
+    "/schools/{schoolId}": {
+      "schema": "SchoolData",
+      "description": "Stores consolidated school administration dataset"
+    },
+    "/schools/{schoolId}/sections/{sectionId}": {
+      "schema": "SchoolSection",
+      "description": "Stores individual section data (e.g. students, teachers, assessments, attendance) for modular sync"
+    },
+    "/test/{testId}": {
+      "schema": "ConnectionTest",
+      "description": "Used by getDocFromServer to verify connection status"
+    }
+  }
+}

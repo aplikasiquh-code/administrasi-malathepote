@@ -1,0 +1,252 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --font-mono: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --font-serif: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+}
+
+@layer base {
+  *, ::before, ::after {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+  }
+
+  html, body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+  }
+
+  input, select, textarea, button, table {
+    font-family: inherit;
+  }
+}
+
+/* STANDARD A4 PAGE CONFIGURATION FOR PRINT & PDF EXPORT */
+@page {
+  size: A4 portrait;
+  margin: 6mm 8mm 6mm 8mm;
+}
+
+@media print {
+  /* High fidelity color and background print */
+  *, *::before, *::after {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  html, body {
+    width: 100% !important;
+    min-width: 100% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif !important;
+    font-size: 11pt !important;
+    line-height: 1.35 !important;
+    overflow: visible !important;
+    position: static !important;
+  }
+
+  /* Hide screen-only interactive chrome */
+  header, 
+  aside, 
+  nav, 
+  .no-print, 
+  .print\:hidden,
+  button:not(.printable),
+  [role="tooltip"],
+  .toast-container {
+    display: none !important;
+  }
+
+  /* Root and layout containers expansion for full A4 coverage without flex gaps */
+  #root,
+  #root > div,
+  #main-app-container,
+  main {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    display: block !important;
+    position: static !important;
+    overflow: visible !important;
+    float: none !important;
+  }
+
+  /* When print modal is open, completely isolate and hide background application */
+  body.print-modal-open #main-app-container,
+  body.print-modal-open .app-non-printable {
+    display: none !important;
+  }
+
+  /* Unclip modal wrappers so pages flow naturally across A4 sheets without leading blank page */
+  body.print-modal-open .fixed,
+  body.print-modal-open .backdrop-blur-sm,
+  body.print-modal-open .backdrop-blur-md,
+  body.print-modal-open .animate-in,
+  .print-unclip {
+    position: static !important;
+    display: block !important;
+    overflow: visible !important;
+    max-height: none !important;
+    height: auto !important;
+    min-height: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    transform: none !important;
+    animation: none !important;
+  }
+
+  /* Container fitting for A4 Portrait */
+  .a4-portrait-sheet {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    box-sizing: border-box !important;
+    padding: 0 !important;
+    display: block !important;
+    position: static !important;
+  }
+
+  /* Container fitting for A4 Landscape */
+  .a4-landscape-sheet {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    box-sizing: border-box !important;
+    padding: 0 !important;
+    display: block !important;
+    position: static !important;
+  }
+
+  /* Prevent any unintentional top margin on the first printable container */
+  .a4-portrait-sheet:first-child,
+  .a4-landscape-sheet:first-child,
+  #printable-report-document,
+  #official-student-report-card,
+  #printable-buku-induk-document {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  /* Ensure tables render with crisp borders, wrap cleanly, and respect pagination */
+  table {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-collapse: collapse !important;
+    page-break-inside: auto;
+  }
+
+  th, td {
+    word-break: break-word;
+    box-sizing: border-box !important;
+  }
+
+  tr {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  thead {
+    display: table-header-group !important;
+  }
+
+  tfoot {
+    display: table-footer-group !important;
+  }
+
+  /* Headings should stay attached to the following content */
+  h1, h2, h3, h4, h5, h6 {
+    break-after: avoid !important;
+    page-break-after: avoid !important;
+  }
+
+  /* Images must scale gracefully and never exceed the sheet boundary */
+  img {
+    max-width: 100% !important;
+    height: auto;
+  }
+
+  /* Prevent page breaks inside critical elements like signatures */
+  .break-inside-avoid, 
+  .print-avoid-break {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Clean page break between student report cards */
+  .break-after-page, 
+  .page-break-always,
+  .report-sheet-break {
+    break-after: page !important;
+    page-break-after: always !important;
+  }
+
+  .report-sheet-1 {
+    break-after: page !important;
+    page-break-after: always !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+    max-height: 285mm !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+
+  .report-sheet-2 {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+    max-height: 285mm !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+
+  .report-card-page table {
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  /* Ensure dark themes reset to paper white with sharp black typography */
+  .bg-slate-900, 
+  .bg-slate-950, 
+  .bg-slate-800, 
+  .bg-slate-850, 
+  .bg-slate-800\/60,
+  .bg-slate-800\/40,
+  .bg-slate-900\/90 {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+  }
+
+  .text-white, 
+  .text-slate-100, 
+  .text-slate-200, 
+  .text-slate-300, 
+  .text-slate-400 {
+    color: #111827 !important;
+  }
+
+  .border-slate-800,
+  .border-slate-700,
+  .border-slate-600 {
+    border-color: #d1d5db !important;
+  }
+}
+
+

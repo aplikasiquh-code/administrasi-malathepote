@@ -1,0 +1,26 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 100;
+    }
+
+    // Health check and connection validation
+    match /test/{testId} {
+      allow read, write: if true;
+    }
+
+    // School Administration Data
+    match /schools/{schoolId} {
+      allow get, create, update, delete: if isValidId(schoolId);
+      allow list: if true;
+
+      // Modular sections: students, teachers, assessments, attendance, curriculum, etc.
+      match /sections/{sectionId} {
+        allow get, create, update, delete: if isValidId(schoolId) && isValidId(sectionId);
+        allow list: if isValidId(schoolId);
+      }
+    }
+  }
+}

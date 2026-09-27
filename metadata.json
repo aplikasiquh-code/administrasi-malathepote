@@ -1,0 +1,8 @@
+{
+  "name": "Administrasi Malathe Pote",
+  "description": "Sistem informasi dan administrasi sekolah dasar untuk pengelolaan profil sekolah, data guru dan tenaga kependidikan, data siswa per kelas, serta dashboard statistik.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
